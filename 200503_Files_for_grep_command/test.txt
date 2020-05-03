@@ -1,12 +1,9 @@
 a
-a
-a
-b
-b
 b
 b
 c
 c
 c
-c
-c
+abc
+acb
+abcd
