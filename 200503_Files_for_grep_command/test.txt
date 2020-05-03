@@ -4,6 +4,7 @@ b
 c
 c
 c
+ba
 abc
 acb
 abcd
