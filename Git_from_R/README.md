@@ -14,21 +14,22 @@ brew install git
 
 # Check version
 git --version
+git remote -v
 ```
 
 ### then run RStudio :
 ```R
 getwd()
 
-setwd("[move to your directory]")
+setwd( "[move to your directory]" )
 
-system("git config --global user.name [Your account name]")
+system( "git config --global user.name [Your account name]" )
 
-system("git config --global user.email [Your email name]")
+system( "git config --global user.email [Your email name]" )
 
-system("git config --global color.ui auto")
+system( "git config --global color.ui auto" )
 
-system("git config -l")
+system( "git config -l" )
 
 ```
 
@@ -36,20 +37,20 @@ system("git config -l")
 1. obtain your git repository. 
 ```R
 
-system("git clone [Your Git https]")
+system( "git clone [Your Git https]" )
 
 ```
 
 2. check your config and status.
 ```R
 
-setwd("[your git directory]")
+setwd( "[your git directory]" )
 
-system("ls -a")
+system( "ls -a" )
 
-system("git config -l")
+system( "git config -l" )
 
-system("git status")
+system( "git status" )
 
 ```
 
@@ -58,15 +59,15 @@ system("git status")
 4. add: Add all changes to index
 ```R
 # The below means " git add . & git add -u ".
-system("git add -A")
+system( "git add -A" )
 ```
 5. commit: Register file in local repository
 ```R
-system("git commit -m add new file")
+system( "git commit -m add_new_file" )
 ```
 6. push: Push the local repository and reflect it to the remote repository
 ```R
-system("git push origin master")
+system( "git push origin master" )
 ```
 
 ### Save the password for https connection on RStudio
