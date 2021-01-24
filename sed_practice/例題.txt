@@ -1,14 +1,14 @@
-AAAAA
-BBBBB
-CCCCC
+a
+b
+b
+c
+c
 
-DDDDDEEEEE
-FFFFF
-GGGGG
-HHHHH
+abc
 
-JJJJJKKKKK
-LLLLL
-MMMMM
-NNNNN
+cba
+
+acb
+
+abcd
 
