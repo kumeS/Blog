@@ -9,3 +9,9 @@ https://kumes.github.io/Blog/TechnicalAnalysis_USA_Market/US_market_latest.pdf
 
 https://kumes.github.io/Blog/TechnicalAnalysis_USA_Market/US_MAD_latest.pdf
 
+## Downloads
+
+svn export  https://github.com/kumeS/Blog/trunk/grep_practice_02
+
+svn export  https://github.com/kumeS/Blog/trunk/sparql_curl_samples
+
