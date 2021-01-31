@@ -1,0 +1,7 @@
+?o	?oLabel	?prop	?propLabel
+<http://www.wikidata.org/entity/Q12483>	"統計学"@ja	<http://www.wikidata.org/entity/P279>	"上位クラス"@ja
+<http://www.wikidata.org/entity/Q21198>	"情報学"@ja	<http://www.wikidata.org/entity/P279>	"上位クラス"@ja
+<http://www.wikidata.org/entity/Q33521>	"応用数学"@ja	<http://www.wikidata.org/entity/P279>	"上位クラス"@ja
+<http://www.wikidata.org/entity/Q268592>	"経済の分野"@ja	<http://www.wikidata.org/entity/P31>	"分類"@ja
+<http://www.wikidata.org/entity/Q4671286>	"アカデミック・メジャー"@ja	<http://www.wikidata.org/entity/P31>	"分類"@ja
+<http://www.wikidata.org/entity/Q11862829>	"学問領域"@ja	<http://www.wikidata.org/entity/P31>	"分類"@ja
