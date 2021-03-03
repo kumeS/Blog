@@ -1,0 +1,6 @@
+abc ABC abc
+ABC abc ABC
+def DEF def
+DEF def DEF
+abc.ABC.abc
+ABC.abc.ABC
