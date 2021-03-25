@@ -10,6 +10,7 @@ https://kumes.github.io/Blog/TechnicalAnalysis_USA_Market/US_MAD_latest.pdf
 
 https://kumes.github.io/Blog/SP500/SPY_00.html
 
+
 ## Downloads by Terminal command
 
 $ svn export  https://github.com/kumeS/Blog/trunk/grep_practice_02
