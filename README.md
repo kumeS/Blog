@@ -12,6 +12,10 @@ https://kumes.github.io/Blog/SP500/SPY_00.html
 
 https://kumes.github.io/Blog/gtrendsR/Graph_05.html
 
+https://kumes.github.io/Blog/SaikoroGame/Animation_SaikoroGame03.gif
+
+https://kumes.github.io/Blog/SaikoroGame/Animation_SaikoroGame05.gif
+
 ## Downloads by Terminal command
 
 $ svn export  https://github.com/kumeS/Blog/trunk/grep_practice_02
