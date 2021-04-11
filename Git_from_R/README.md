@@ -14,7 +14,6 @@ brew install git
 
 # Check version
 git --version
-git remote -v
 ```
 
 ### then run RStudio :
