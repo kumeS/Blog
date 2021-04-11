@@ -1,0 +1,12 @@
+aaaaa
+AAAAABBB
+AAAAABBBBB
+bbbbb
+BBBBBAAAAA
+
+
+ccccc
+CCCCCDDDDD
+
+ddddd
+DDDDDCCCCC
