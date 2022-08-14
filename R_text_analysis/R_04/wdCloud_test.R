@@ -1,3 +1,6 @@
+#ロード
+library(wordcloud2); library(htmlwidgets)
+
 #複合語抽出: Compound_calc()関数を使います
 source("https://raw.githubusercontent.com/kumeS/Blog/master/R_text_analysis/R_03/Compound_calc.R")
 
