@@ -43,7 +43,7 @@ Dat0 <- Dat[Dat$FreqR > as.numeric(res[Top]),]
 
 #抽出の結果
 cat("Dat0")
-cat(dim(Dat0))
+print(dim(Dat0))
 #[1] 30  3
 
 #表示
