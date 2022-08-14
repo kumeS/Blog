@@ -1,0 +1,47 @@
+* {
+	background-color: honeydew;
+} 
+body {
+  color: #4a4a4a;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 2;
+}
+
+dt {
+    font-weight:bold;
+}
+
+h1 {
+    font-weight:bold;
+}
+
+h2 {
+    font-weight:bold;
+    margin:0px 0px 0px 0px;
+}
+
+h3 {
+    font-weight:bold;
+    margin:0px 0px 0px 0px;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+hr{
+    color: palegreen;
+    border-top:double 3px #CCC;
+}
+
+hr.dashed{
+    border:none;
+    border-top:dashed 1px #CCC;
+    height:1px;
+    color: palegreen;
+    margin: 0 6 0 6;
+}
+
+div.leftlink {text-align: right;}

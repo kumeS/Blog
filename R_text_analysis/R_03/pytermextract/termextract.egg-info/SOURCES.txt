@@ -1,0 +1,14 @@
+setup.py
+termextract/__init__.py
+termextract/chinese_plaintext.py
+termextract/core.py
+termextract/english_plaintext.py
+termextract/english_postagger.py
+termextract/janome.py
+termextract/japanese_plaintext.py
+termextract/mecab.py
+termextract/nlpir.py
+termextract.egg-info/PKG-INFO
+termextract.egg-info/SOURCES.txt
+termextract.egg-info/dependency_links.txt
+termextract.egg-info/top_level.txt
