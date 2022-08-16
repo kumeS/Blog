@@ -1,0 +1,7 @@
+time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,type,horizontalError,depthError,magError,magNst,status,locationSource,magSource
+2022-08-14T13:44:20.760Z,-32.7728,-179.0086,39.08,6.6,mww,63,67,5.26,0.63,us,us6000iasi,2022-08-14T18:32:34.888Z,"south of the Kermadec Islands",earthquake,10.52,4.452,0.059,28,reviewed,us,us
+2022-08-14T08:20:01.800Z,33.1554,92.8196,10,5.5,mww,99,30,12.895,0.82,us,us6000iaqi,2022-08-15T08:23:43.980Z,"199 km NNE of Nagqu, China",earthquake,2.07,1.821,0.089,12,reviewed,us,us
+2022-07-28T04:15:05.140Z,-21.9342,-70.3404,54,6.1,mww,111,33,0.556,1,us,us6000i636,2022-07-29T16:21:02.772Z,"22 km NW of Tocopilla, Chile",earthquake,6,1.9,0.036,73,reviewed,us,us
+2022-07-27T18:58:58.403Z,-22.1728,-68.5651,112,6.2,mww,115,31,0.731,1.13,us,us6000i5zi,2022-08-09T20:37:12.624Z,"48 km NE of Calama, Chile",earthquake,4.35,1.782,0.04,61,reviewed,us,us
+2022-07-27T00:43:28.277Z,17.5448,120.8099,46,7,mww,167,21,5.252,0.63,us,us6000i5rd,2022-08-12T11:41:16.527Z,"13 km NNE of Bantay, Philippines",earthquake,7.72,1.872,0.044,50,reviewed,us,us
+2022-07-23T16:07:48.157Z,26.9092,55.2149,10,5.4,mww,91,54,2.149,0.83,us,us7000hszk,2022-07-25T22:47:44.818Z,"51 km NE of Bandar-e Lengeh, Iran",earthquake,8.5,1.9,0.098,10,reviewed,us,us
