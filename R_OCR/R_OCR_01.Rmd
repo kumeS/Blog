@@ -1,0 +1,144 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+## 【R言語と画像認識】
+R環境で、OCR（光学文字認識）と顔認識をやってみた件
+
+#######################
+R言語
+画像認識
+OCR
+光学文字認識
+顔認識
+R - 顔認識
+R - OCR
+R - tesseract
+R - EBimage
+#######################
+
+## はじめに
+
+さっき調べてみたら、
+R環境で、OCR（光学文字認識）と顔認識ができるみたいとのことで、
+早速、それらについて記事を書いてみることにした。
+
+OCRとは、活字や手書きテキストの画像データを文字コードに変換する技術のことです。
+Rパッケージの`tesseract`を使うとできるみたいです。
+
+####関連パッケージのセットアップ
+
+まずは、関連パッケージをインストールします。
+
+```{r}
+#tesseractのインストール
+install.packages("tesseract")
+library(tesseract)
+
+#EBimageのインストール
+install.packages("BiocManager")
+BiocManager::install("EBImage")
+library(EBImage)
+
+```
+
+##tesseract::ocr関数を使った、画像からの文字起こし
+
+tesseractパッケージには、ocrという関数が用意されていて、それを使うみたいです。
+
+####英語への変換の場合
+
+```{r}
+#言語設定: 英語(eng)
+eng <- tesseract("eng")
+
+#テスト画像の読み込み
+Img <- EBImage::readImage(files="http://jeroen.github.io/images/testocr.png")
+
+#テスト画像の表示
+options(EBImage.display = "raster")
+EBImage::display(Img)
+```
+
+画像
+
+このテスト画像を利用して、次に、OCRを実行します。
+
+```{r}
+#OCR実行
+text <- tesseract::ocr("http://jeroen.github.io/images/testocr.png", 
+                       engine = eng)
+
+#結果表示
+cat(text)
+#This is a lot of 12 point text to test the
+#ocr code and see if it works on all types
+#of file format.
+#
+#The quick brown dog jumped over the
+#lazy fox. The quick brown dog jumped
+#over the lazy fox. The quick brown dog
+#jumped over the lazy fox. The quick
+#brown dog jumped over the lazy fox.
+
+text
+#[1] "This is a lot of 12 point text to test the\nocr code and see if it works on all types\nof
+#file format.\n\nThe quick brown dog jumped over the\nlazy fox. The quick brown dog jumped\nover
+#the lazy fox. The quick brown dog\njumped over the lazy fox. The quick\nbrown dog jumped over the
+#lazy fox.\n"
+```
+
+どうも改行コード(\n)も出力されるみたいですね。
+
+####日本語への変換の場合
+
+さて、画像中に日本語が含まれる場合はどうかについても試してみます
+
+手始めに、tesseract_download関数で、日本語のエンジンを入れる必要があります。
+
+
+```{r}
+#言語設定: 日本語(jpn)
+tesseract_download("jpn")
+jpn <- tesseract("jpn")
+
+#テスト画像の読み込み
+imgj <- "https://cdn-ak.f.st-hatena.com/images/fotolife/s/skume/20220828/20220828015940.png"
+Img <- EBImage::readImage(files=imgj)
+
+#テスト画像の表示
+options(EBImage.display = "raster")
+EBImage::display(Img)
+```
+
+画像
+
+このテスト画像を使い、日本語OCRを実行します。
+
+```{r}
+#OCR実行
+textj <- tesseract::ocr(imgj, engine = jpn)
+
+#結果表示
+cat(textj)
+#0 い
+#トマイニングをやっ      っ       ー
+#てみたら、〇〇〇な         でミ
+#ーー 件【その1: 夏目激        に
+#ん」 を使った、テキ      SN
+
+```
+
+あら、、、全然できていませんね、、
+
+
+##参考
+
+https://skume.net/entry/2021/07/26/021731
+
+https://cran.r-project.org/web/packages/tesseract/vignettes/intro.html
+
+
+https://dinov.sakura.ne.jp/wp/?p=1747
