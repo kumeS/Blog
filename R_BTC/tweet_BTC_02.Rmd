@@ -1,0 +1,430 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+#【R言語と仮想通貨】ビットコイン(BTC)の長期トレンド解析について
+Mac 
+R言語
+仮想通貨
+R - binancer 
+R - TTR 
+R - pdftools
+R - lubridate 
+ビットコイン 
+BTC
+##############
+
+##はじめに
+
+仮想通貨、その代表格であるビットコイン(BTC)がかなり低迷しています。
+
+本日も、FTXショックで仮想通全体が暴落しています。
+
+そんな時こそ、<span class="marker-yellow">**BTCの長期トレンドを解析して、
+どれ位安い値段位置なのかを確認したいと思ってます。**</span>
+
+そこで、BTCの解析・可視化関数を作成してみました。
+
+仕事もいそがしかっ他のもあるけど、、2週間ほど、ずっと、ここ記事の関数群を作成していてような。。
+
+####パッケージ準備
+
+関連パッケージをインストールしていきます。
+また、この記事用に作成した、関数群はGistサイトから適時読み込みます。
+
+```{r}
+#パッケージ・インストール
+pack <- c("binancer", "lubridate", "TTR", "pdftools")
+install.packages(pack[!(pack %in% unique(rownames(installed.packages())))])
+
+#ライブラリ準備
+library(binancer)
+library(lubridate)
+library(TTR)
+library(pdftools)
+```
+
+PDFファイルを画像(PNG)に変換したい場合には、
+追加で、pdftoolsの設定をします。過去の記事をご参考のこと。
+
+https://skume.net/entry/2021/06/23/001930
+
+##ビットコインの長期チャートデータについて
+
+[getBTC関数](https://gist.github.com/kumeS/c466e97d42f6facbb8ba5a22ed361bf4)を使って、2010年7月18日から今日(現在、2022年11月9日)までのBTCの日足データを取得します。
+
+getBTC.Rを読み込んで、getBTC関数を実行して、取得したデータフレームを表示します。
+
+```{r}
+#getBTC.Rの読み込み
+source("https://gist.githubusercontent.com/kumeS/c466e97d42f6facbb8ba5a22ed361bf4/raw/07728e5e4810e53aa8bdcc411ac51603943761df/getBTC.R")
+
+#BTCのデータ取得
+Dat <- getBTC()
+
+#表示
+head(Dat)
+#        Date Close Month
+#1 2010-07-18   0.1    07
+#2 2010-07-19   0.1    07
+#3 2010-07-20   0.1    07
+#4 2010-07-21   0.1    07
+#5 2010-07-22   0.1    07
+#6 2010-07-23   0.1    07
+
+tail(Dat)
+#           Date    Close Month
+#4492 2022-11-03 20207.82    11
+#4493 2022-11-04 21148.52    11
+#4494 2022-11-05 21299.37    11
+#4495 2022-11-06 20905.58    11
+#4496 2022-11-07 20591.13    11
+#4497 2022-11-08 19358.91    11
+```
+
+
+
+短期移動平均
+上下を色で表現
+
+
+長期移動平均かける何倍か知る
+
+##長期移動平均から、BTCの経験的な底値が分かるかも
+
+[SMA_LogPlot関数](https://gist.github.com/kumeS/cf479609eb312db4c7f3b3a002dda3df)を使って、BTCの値動きと長期移動平均(単純移動平均, SMA)との関係性を解析します。Y軸は、logです。
+
+上値のラインは、底値に任意のファクターを掛け算して計算しています。
+
+緑のライン・領域は売りゾーン(高い)、青のライン・領域は安くて買いゾーンという判断になります。
+
+これまでの歴史のチャート推移を示してみました。
+
+```{r}
+#SMA_LogPlot関数
+source("https://gist.githubusercontent.com/kumeS/cf479609eb312db4c7f3b3a002dda3df/raw/b4ea40ccd16a994727fffb2ce415cc73ca8b19b3/SMA_LogPlot.R")
+
+#pdf_png_save関数
+source("https://gist.githubusercontent.com/kumeS/bad9ace466970bd13b5afd15eed6f9b6/raw/8cd41b26c00696c59be98b4ce27a4f726ad27cae/pdf_png_save.R")
+
+#(1) 2017年1月-2020年1月のチャート
+SMA_LogPlot(Dat,
+            term=c("2017-01-01", "2020-01-01"),
+            xax = 0.008, yax = 0.9995, ycex=0.8)
+#保存
+pdf_png_save(FileName="SMA_LogPlot_01.pdf")
+
+#(2) 2018年1月-2020年1月のチャート
+SMA_LogPlot(Dat,
+            term=c("2018-10-01", "2020-01-01"),
+            xax = 0.025, yax = 0.9995, ycex=0.8)
+pdf_png_save(FileName="SMA_LogPlot_02.pdf")
+
+#(3) 2020年1月以降のチャート
+SMA_LogPlot(Dat, 
+            term=c("2020-01-01", as.character(lubridate::today())))
+pdf_png_save(FileName="SMA_LogPlot_03.pdf")
+
+#(4) 2022年1月までのチャート
+SMA_LogPlot(Dat, 
+            term=c("2022-01-01", as.character(lubridate::today())),
+            xax = 0.03, yax = 0.9997, ycex=0.8)
+pdf_png_save(FileName="SMA_LogPlot_04.pdf")
+```
+
+画像
+
+現在の2万ドル近辺でも、2019年1月あたりより、売られてますよね。
+
+##長期の加重移動平均線(WMA)から、BTCの経験的な底値が分かるかも
+
+[WMA_Plot関数](https://gist.github.com/kumeS/1f3f3556ddff20e0bc105ae1e8e5f443)を使って、BTCの値動きと長期移動平均(加重移動平均線, WMA)との関係性を解析します。
+
+```{r}
+#WMA_Plot.Rを読み込む
+source("https://gist.githubusercontent.com/kumeS/1f3f3556ddff20e0bc105ae1e8e5f443/raw/bae27cf1d8e9148c760adf14159e9664d898f7f0/WMA_Plot.R")
+
+#pdf_png_save関数
+source("https://gist.githubusercontent.com/kumeS/bad9ace466970bd13b5afd15eed6f9b6/raw/8cd41b26c00696c59be98b4ce27a4f726ad27cae/pdf_png_save.R")
+
+#(1) 2017年1月-2020年1月のチャート
+WMA_Plot(Dat,
+         term=c("2017-01-01", "2020-01-01"))
+pdf_png_save(FileName="WMA_Plot_01.pdf")
+
+#(2) 2020年1月以降のチャート
+WMA_Plot(Dat, 
+         term=c("2020-01-01", as.character(lubridate::today())))
+pdf_png_save(FileName="WMA_Plot_02.pdf")
+```
+
+画像
+
+WMAの長期トレンドから観ても、2万円以下は安いのかもですね。
+
+####WMAの長期トレンドをポリゴン表示してみると。。。
+
+[WMA_polygon_Plot関数](https://gist.github.com/kumeS/00dfb4d5983904cbc2204d22ae156f01)で実行します。
+
+```{r}
+#WMA_polygon_Plot.Rの読み込み
+source("https://gist.githubusercontent.com/kumeS/00dfb4d5983904cbc2204d22ae156f01/raw/2926358dfcd261d17d088bfd98a43d95f89c87ca/WMA_polygon_Plot.R")
+
+#Log表示
+WMA_polygon_Plot(Dat, term=c("2020-01-01", as.character(lubridate::today())),
+                lag=5, xax = 0.015, yax = 0.999, xcex=0.9, ycex=0.8, rou=0,
+                M1=0.15, m1=0.9, line_col=T, LogY=T)
+pdf_png_save(FileName="WMA_polygon_Plot_01.pdf")
+
+#非Log表示
+WMA_polygon_Plot(Dat, term=c("2020-01-01", as.character(lubridate::today())),
+                lag=5, xax = 0.1, yax = 0.999, xcex=0.9, ycex=0.8, rou=0,
+                M1=0.15, m1=0.8, line_col=T, LogY=F)
+pdf_png_save(FileName="WMA_polygon_Plot_02.pdf")
+```
+
+画像
+
+やや見易いような気がします。
+
+##多重の単純移動平均線(SMA)によるBTCのトレンド解析
+
+単純移動平均線(SMA)が下値のサポートとして機能するか、上値のレジスタンスとなるか長期のトレンド解析をしてみました。
+
+[trends_SMA_plot関数](https://gist.github.com/kumeS/f4813db3049e95db9dd53d528afddf72)にて実行します。
+
+```{r}
+#trends_SMA_plot.Rの読み込み
+source("https://gist.githubusercontent.com/kumeS/f4813db3049e95db9dd53d528afddf72/raw/5235ebace745883a939623f32a3e72bc4f8c2d65/trends_SMA_plot.R")
+
+#(1) 2017年1月-2020年1月のチャート
+trends_SMA_plot(Dat, 
+            term=c("2017-01-01", "2020-01-01"),
+            lag=5, xax = 0.1, yax = 0.9999)
+pdf_png_save(FileName="trends_SMA_plot_01.pdf")
+
+#(2) 2020年1月以降のチャート
+trends_SMA_plot(Dat, 
+            term=c("2020-01-01", as.character(lubridate::today())))
+pdf_png_save(FileName="trends_SMA_plot_02.pdf")
+
+```
+
+##多重の加重移動平均線(WMA)によるBTCのトレンド解析
+
+WMA移動平均線が下値のサポートとして機能するか、上値のレジスタンスとなるか長期のトレンド解析をしてみました。
+
+[trends_plot関数](https://gist.github.com/kumeS/71cc142fe533d232fa51c985c2a345a7)にて実行します。
+
+```{r}
+#trends_plot.Rの読み込み
+source("https://gist.githubusercontent.com/kumeS/71cc142fe533d232fa51c985c2a345a7/raw/f41132cf0e485cc9d4f5fb85300a65fadd7db499/trends_plot.R")
+
+#(1) 2017年1月-2020年1月のチャート
+trends_plot(Dat,
+            term=c("2017-01-01", "2020-01-01"),
+            lag=5, xax = 0.1, yax = 0.9999)
+pdf_png_save(FileName="trends_plot_01.pdf")
+
+#(2) 2020年1月以降のチャート
+trends_plot(Dat, 
+            term=c("2020-01-01", as.character(lubridate::today())))
+pdf_png_save(FileName="trends_plot_02.pdf")
+
+#直近
+trends_plot(Dat, 
+            term=c("2022-06-01", as.character(lubridate::today())),
+            lag=5, xax = 0.1, yax = 0.9999)
+pdf_png_save(FileName="trends_plot_03.pdf")
+
+```
+
+画像
+
+現在、絶賛、真っ赤ですね。これはかなり上値は重いですよね。
+
+
+
+
+```{r}
+Dat00 <- Dat
+#Dat00$Close <- Dat00$Close
+
+aa <- c((length(Dat00$Date)-2000):length(Dat00$Date))
+M <- max(Dat00$Close[aa]) + abs(max(Dat00$Close[aa]) - min(Dat00$Close[aa]))*0.05
+m <- min(Dat00$Close[aa])*0.95
+x <- min(as.numeric(Dat00$Date)[aa])
+X <- max(as.numeric(Dat00$Date))+50
+
+plot(Dat00$Date, Dat00$Close, 
+     ylim = c(m, M),
+     xlim = c(x, X),
+     xlab = "", ylab = "", 
+     type = "l", col = "white", 
+     lwd = 1,
+     xaxt = "n",
+     yaxt = "n")
+
+#Plot
+lines(Dat00$Date, Dat00$Close, type = "l", lwd = 1, col="#E98683")
+
+#MA
+lines(a, SMA(Dat00$Close, n = 2000), col="#56bc82")
+
+head(Dat00)
+Dat00$SMA2000 <- SMA(Dat00$Close, n = 2000)
+Dat00$Inc <- Dat00$Close/Dat00$SMA2000
+
+Dat00$SMA2000[is.na(Dat00$SMA2000)] <- NA
+Dat00$Inc[is.na(Dat00$Inc)] <- NA
+
+#color
+pal <- c("violet", "blue", "white", "green", "yellow", "orange", "red")
+cls <- classInt::classIntervals(Dat00$Inc, n=10, style="quantile")
+color.pal <- classInt::findColours(cls, pal)
+Dat00$color.pal <- as.character(color.pal)
+
+head(Dat00)
+cc <- c(T, rep(F, 29))
+Dat01 <- Dat00[cc,]
+head(Dat01)
+
+#Plot
+points(Dat01$Date, Dat01$Close, type = "p", pch=21, bg=Dat01$color.pal)
+
+
+```
+
+##補足
+
+####BTCの長期チャートのdygraphs表示
+
+折角なので、dygraph関数で、BTCの長期チャートをインタラクティブに可視化してみました。
+
+```{r}
+#ライブラリ準備
+library(dygraphs)
+library(xts)
+
+#データ読み込み
+Dat <- getBTC()
+rownames(Dat) <- Dat$Date
+Dat.xts <- xts::as.xts(Dat)
+
+#可視化
+Dat.xts[,2] %>%
+  dygraphs::dygraph(main = "BTC") %>% 
+  dygraphs::dySeries("Close", label = "BTC") %>%
+  dygraphs::dyRangeSelector(height = 40)  %>%
+  htmltools::save_html(file="BTC_x.html")
+
+```
+
+画像
+BTC_x
+
+
+##イーサリアム(ETH)の長期チャートデータについて
+
+[getETH関数](https://gist.github.com/kumeS/3260853bb9278061a4a245a4e11092b2)を使って、ETHの日足長期データを取得します。
+
+```{r}
+#getETH.Rの読み込み
+source("https://gist.githubusercontent.com/kumeS/3260853bb9278061a4a245a4e11092b2/raw/ea2fe720e04894456abff6c6c4e7e1ade687a85d/getETH.R")
+
+#ETHのデータ取得
+Dat <- getETH()
+
+#表示
+head(Dat)
+#        Date Close Month
+#1 2015-08-07  3.00    08
+#2 2015-08-08  1.20    08
+#3 2015-08-09  1.20    08
+#4 2015-08-10  1.20    08
+#5 2015-08-11  0.99    08
+#6 2015-08-12  1.29    08
+
+tail(Dat)
+#           Date    Close Month
+#2645 2022-11-03 1518.163    11
+#2646 2022-11-04 1530.902    11
+#2647 2022-11-05 1627.705    11
+#2648 2022-11-06 1573.400    11
+#2649 2022-11-07 1567.748    11
+#2650 2022-11-08 1452.090    11
+```
+
+データの取得元は、[ethereumprice.org](https://ethereumprice.org/history/?start=2015-08-07&end=2022-11-08&currency=USD)です。
+
+
+
+```{r}
+#Data from https://www.investing.com/crypto/bitcoin/historical-data
+
+BTC <- read.table("BTC_HistoricalData.csv", sep=",", header = T)
+head(BTC)
+
+colnames(BTC)[6] <- "Vol"
+colnames(BTC)[7] <- "Change_Percent"
+BTC$Date <- sub(",", "", BTC$Date)
+BTC$Price <- sub(",", "", BTC$Price)
+BTC$Open <- sub(",", "", BTC$Open)
+BTC$High <- sub(",", "", BTC$High)
+BTC$Low <- sub(",", "", BTC$Low)
+BTC$Vol <- sub(",", "", BTC$Vol)
+BTC$Change_Percent <- sub(",", "", BTC$Change)
+BTC$Change_Percent <- sub("%", "", BTC$Change)
+
+head(BTC)
+BTC$Vol[BTC$Vol == "-"] <- "0A"
+
+table(base::substr(BTC$Vol, start=nchar(BTC$Vol), stop=nchar(BTC$Vol)))
+a <- base::substr(BTC$Vol, start=nchar(BTC$Vol), stop=nchar(BTC$Vol))
+table(a)
+b <- match(a, c("A", "K", "M", "B"))
+table(b)
+
+d <- as.numeric(base::substr(BTC$Vol, start=1, stop=nchar(BTC$Vol)-1))
+BTC$Vol <- d*(10^(3*(b-1)))
+
+BTC$Date <- as.Date(paste0(base::substr(BTC$Date, start=nchar(BTC$Date)-3, stop=nchar(BTC$Date)),
+       "-",
+       formatC(match(base::substr(BTC$Date, start=1, stop=3), month.abb), width = 2, flag = "0"),
+       "-",
+       base::substr(BTC$Date, start=5, stop=6)
+       ))
+
+
+BTC <- BTC[order(BTC$Date),]
+head(BTC)
+
+write.table(BTC, "BTC_HistoricalData_by_sk.csv", sep=",", row.names = F)
+
+BTCsk <- read.table("BTC_HistoricalData_by_sk.csv", sep=",", header = T)
+head(BTCsk)
+str(BTCsk)
+```
+
+
+```{r}
+browseURL("https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html")
+
+Dat <- read.table(pipe("pbpaste"), header=T, stringsAsFactors = F, sep="\t")
+Dat[Dat==""] <- 0
+Dat1 <- data.frame(lapply(Dat, function(x){gsub(pattern="%", replacement = "", x)})
+,stringsAsFactors = FALSE)
+
+
+```
+
+
+
+https://www.statology.org/r-date-format/
+
+
+https://stackoverflow.com/questions/6549239/convert-months-mmm-to-numeric
+
+http://tips-r.blogspot.com/2014/06/r_16.html
