@@ -10,7 +10,7 @@ https://kumes.github.io/Blog/TechnicalAnalysis_USA_Market/US_market_latest.pdf
 
 https://kumes.github.io/Blog/TechnicalAnalysis_USA_Market/US_MAD_latest.pdf
 
-https://kumes.github.io/Blog/SP500/SPY_00.html
+https://kumes.github.io/Blog/SP500/SPY/SPY_00.html
 
 https://kumes.github.io/Blog/gtrendsR/Graph_05.html
 
