@@ -1,0 +1,4 @@
+Module	Section	Sample Name	Source
+Trimmomatic	all_sections	QC_Trim_v01.Rmd	/Users/sas/Desktop/fastqc/QC_Trim_v01.Rmd
+FastQC	all_sections	frag_1	/Users/sas/Desktop/fastqc/frag_1_fastqc.zip
+FastQC	all_sections	frag_2	/Users/sas/Desktop/fastqc/frag_2_fastqc.zip
